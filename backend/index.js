@@ -2,24 +2,24 @@ const express = require('express');
 const app = express();
 
 
-app.get('/api/motes/', (req, res) => {
-  res.status(200).json({ message: 'get all motes' });
+app.get('/api/notes/', (req, res) => {
+  res.status(200).json({ message: 'get all notes' });
 });
 
-app.post('/api/motes/', (req, res) => {
-  res.status(201).json({ message: 'create a new mote successfully' });
+app.post('/api/notes/', (req, res) => {
+  res.status(201).json({ message: 'create a new note successfully' });
 });
 
-app.get('/api/motes/:id', (req, res) => {
-  res.status(200).json({ message: 'get a specific mote' });
+app.get('/api/notes/:id', (req, res) => {
+  res.status(200).json({ message: 'get a specific note' });
 });
 
-app.put('/api/motes/:id', (req, res) => {
-    res.status(200).json({ message: 'update a specific mote successfully' });
+app.put('/api/notes/:id', (req, res) => {
+    res.status(200).json({ message: 'update a specific note successfully' });
 });
 
-app.delete('/api/motes/:id', (req, res) => {
-    res.status(200).json({ message: 'delete a specific mote successfully' });
+app.delete('/api/notes/:id', (req, res) => {
+    res.status(200).json({ message: 'delete a specific note successfully' });
 });
 
 
