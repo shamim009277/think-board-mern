@@ -1,8 +1,8 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { HomePage } from './assets/HomePage'
-import { CreatePage } from './assets/CreatePage'
-import { DeatilsPage } from './assets/DeatilsPage'
+import { HomePage } from './pages/HomePage'
+import { CreatePage } from './pages/CreatePage'
+import { DeatilsPage } from './pages/DeatilsPage'
 import { Toaster } from "react-hot-toast";
 
 
