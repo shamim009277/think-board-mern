@@ -3,7 +3,7 @@ import Note from '../models/noteModel.js';
 export const getAllNotes = async (req, res) => {
     try {
         const notes = await Note.find().sort({ createdAt: -1 });
-        
+
         if (!notes || notes.length === 0) {
             return res.status(404).json({
                 success: false,
@@ -39,12 +39,42 @@ export const getNoteById = async (req, res) => {
     }
 };
 
+// export const createNote = async (req, res) => {
+//     try {
+//         const note = await Note.create(req.body);
+//         res.status(201).json({ status: true, message: 'create a new note successfully', data: note });
+//     } catch (error) {
+//         res.status(500).json({ status: false, message: error.message });
+//     }
+// };
+
 export const createNote = async (req, res) => {
     try {
         const note = await Note.create(req.body);
-        res.status(201).json({ status: true, message: 'create a new note successfully', data: note });
+        res.status(201).json({
+            success: true,
+            message: "Note created successfully",
+            data: note
+        });
     } catch (error) {
-        res.status(500).json({ status: false, message: error.message });
+        if (error.name === "ValidationError") {
+            let errors = {};
+
+            Object.keys(error.errors).forEach((key) => {
+                errors[key] = error.errors[key].message;
+            });
+
+            return res.status(400).json({
+                success: false,
+                message: "Validation failed",
+                errors
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
 };
 

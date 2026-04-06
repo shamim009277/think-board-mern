@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import Swal from "sweetalert2";
 import { Navbar } from '../components/Navbar';
 import { Trash, SquarePen } from 'lucide-react';
+import axios from 'axios';
 
 export const HomePage = () => {
     const [notes, setNotes] = useState([]);
@@ -31,12 +33,30 @@ export const HomePage = () => {
         }
     };
 
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await axios.delete(`http://localhost:5000/api/notes/${id}`);
+                    toast.success("Deleted successfully");
+                    setNotes(notes.filter((note) => note._id !== id));
+                } catch (error) {
+                    toast.error("Delete failed");
+                }
+            }
+        });
+    };
+
     return (
         <div className='max-w-7xl mx-auto p-8 min-h-screen'>
             <Navbar />
-
             <div className="bg-gray-800 rounded-md py-8 px-4 mb-8">
-
                 {/* LOADING STATE */}
                 {loading ? (
                     <div className="flex justify-center items-center py-10">
@@ -54,7 +74,7 @@ export const HomePage = () => {
                 ) : notes.length === 0 ? (
                     /* EMPTY STATE */
                     <div className="text-center text-gray-400">
-                        No notes found 
+                        No notes found
                     </div>
                 ) : (
                     /* NOTES GRID */
@@ -85,7 +105,7 @@ export const HomePage = () => {
 
                                         <button
                                             className="text-red-500 hover:text-red-400"
-                                            onClick={() => toast.success("Delete clicked")}
+                                            onClick={() => handleDelete(note._id)}
                                         >
                                             <Trash className='w-4 h-4' />
                                         </button>
