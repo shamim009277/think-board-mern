@@ -60,8 +60,7 @@ export const HomePage = () => {
                     /* NOTES GRID */
                     <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
                         {notes.map((note) => (
-                            <div key={note._id} className='bg-gray-700 min-h-32 p-4 rounded-md hover:bg-gray-600 transition duration-300'
-                            >
+                            <div key={note._id} className='bg-gray-700 min-h-32 p-4 rounded-md hover:bg-gray-600 transition duration-300'>
                                 <h2 className="text-xl font-bold mb-2 text-orange-500">
                                     {note.title}
                                 </h2>
@@ -80,10 +79,7 @@ export const HomePage = () => {
                                     </p>
 
                                     <div className='flex items-center gap-3'>
-                                        <button
-                                            className="text-blue-400 hover:text-blue-300"
-                                            onClick={() => toast.success("Edit clicked")}
-                                        >
+                                        <button className="text-blue-400 hover:text-blue-300" onClick={() => toast.success("Edit clicked")}>
                                             <SquarePen className='w-4 h-4' />
                                         </button>
 

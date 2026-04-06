@@ -33,7 +33,6 @@ export const getNoteById = async (req, res) => {
         if (!note) {
             return res.status(404).json({ status: false, message: 'Note not found' });
         }
-
         res.status(200).json({ status: true, message: 'get note by id successfully', data: note });
     } catch (error) {
         res.status(500).json({ status: false, message: error.message });

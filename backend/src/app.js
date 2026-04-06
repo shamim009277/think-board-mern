@@ -16,7 +16,6 @@ app.use(
 );
 
 app.use(express.json());
-
 app.use('/api/notes', noteRouter);
 
 connectDB();
