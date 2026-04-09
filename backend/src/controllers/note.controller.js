@@ -80,15 +80,69 @@ export const createNote = async (req, res) => {
 
 export const updateNote = async (req, res) => {
     try {
-        const note = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const { title, description } = req.body;
+        let errors = {};
 
-        if (!note) {
-            return res.status(404).json({ status: false, message: 'Note not found' });
+        // ✅ validation
+        if (!title || title.trim() === "") {
+            errors.title = "Title is required";
         }
 
-        res.status(200).json({ status: true, message: 'update a specific note successfully', data: note });
+        if (!description || description.trim() === "") {
+            errors.description = "Description is required";
+        } else if (description.length < 10) {
+            errors.description = "Description must be at least 10 characters";
+        }
+
+        // ❌ validation error হলে return
+        if (Object.keys(errors).length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Validation failed",
+                errors
+            });
+        }
+
+        // ✅ update (mongoose validation enable)
+        const note = await Note.findByIdAndUpdate(
+            req.params.id,
+            { title, description },
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        // ❌ not found
+        if (!note) {
+            return res.status(404).json({
+                success: false,
+                message: "Note not found"
+            });
+        }
+        res.status(200).json({
+            success: true,
+            message: "Note updated successfully",
+            data: note
+        });
     } catch (error) {
-        res.status(500).json({ status: false, message: error.message });
+        // ✅ mongoose validation error
+        if (error.name === "ValidationError") {
+            let errors = {};
+            Object.keys(error.errors).forEach((key) => {
+                errors[key] = error.errors[key].message;
+            });
+            return res.status(400).json({
+                success: false,
+                message: "Validation failed",
+                errors
+            });
+        }
+        // ❌ server error
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
 };
 

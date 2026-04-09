@@ -3,9 +3,11 @@ import toast, { Toaster } from 'react-hot-toast';
 import Swal from "sweetalert2";
 import { Navbar } from '../components/Navbar';
 import { Trash, SquarePen } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 export const HomePage = () => {
+    const navigate = useNavigate();
     const [notes, setNotes] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -86,27 +88,20 @@ export const HomePage = () => {
                                 </h2>
 
                                 <p className="text-gray-300 leading-5 text-sm">
-                                    {note.description.length > 100
-                                        ? note.description.substring(0, 100) + '...'
-                                        : note.description}
+                                    {note.description.length > 100 ? note.description.substring(0, 100) + '...'  : note.description}
                                 </p>
 
                                 <div className='flex items-center justify-between mt-10'>
                                     <p className="text-xs text-gray-400">
-                                        {note.createdAt
-                                            ? new Date(note.createdAt).toLocaleDateString()
-                                            : 'No date'}
+                                        {note.createdAt  ? new Date(note.createdAt).toLocaleDateString()  : 'No date'}
                                     </p>
 
                                     <div className='flex items-center gap-3'>
-                                        <button className="text-blue-400 hover:text-blue-300" onClick={() => toast.success("Edit clicked")}>
+                                        <button className="text-blue-400 hover:text-blue-300" onClick={() => navigate(`note/${note._id}`)}>
                                             <SquarePen className='w-4 h-4' />
                                         </button>
 
-                                        <button
-                                            className="text-red-500 hover:text-red-400"
-                                            onClick={() => handleDelete(note._id)}
-                                        >
+                                        <button className="text-red-500 hover:text-red-400" onClick={() => handleDelete(note._id)}>
                                             <Trash className='w-4 h-4' />
                                         </button>
                                     </div>
@@ -116,7 +111,6 @@ export const HomePage = () => {
                     </div>
                 )}
             </div>
-
             <Toaster position="top-right" />
         </div>
     );
