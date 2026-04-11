@@ -2,6 +2,7 @@ import noteRouter from './routes/note.route.js';
 import connectDB from './config/db.js';
 import dotenv from 'dotenv';
 import express from 'express';
+import rateLimiter from './middlewire/rateLimiter.js';
 
 import cors from 'cors';
 
@@ -16,6 +17,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(rateLimiter);
 app.use('/api/notes', noteRouter);
 
 connectDB();
